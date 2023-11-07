@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\RankingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -13,14 +14,16 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::prefix('ranking')->controller(RankingController::class)->group(function () {
     Route::post('page-speed', 'pageSpeed');
     Route::post('seo-good', 'seoGood');
- });
+});
+Route::prefix('content')->controller(ContentController::class)->group(function () {
+    Route::post('checking', 'checking');
+});
