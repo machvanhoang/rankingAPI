@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function App() {
     const handleGoogleUrl = async (e) => {
         e.preventDefault();
-        await axios.get(`http://localhost:8000/api/social/google/url`)
+        await axios.get(`${process.env.REACT_APP_ENDPOINT}/social/google/url`)
             .then((res) => {
                 const result = res.data;
                 if (result.success) {
@@ -16,7 +16,7 @@ function App() {
             <div>
                 <ul>
                     <li>
-                        <Link to={`/auth/callback`}>Callback</Link>
+                        <Link to={`/dashboard`}>Dashboard</Link>
                     </li>
                 </ul>
             </div>
