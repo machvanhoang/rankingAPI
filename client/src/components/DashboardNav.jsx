@@ -1,5 +1,23 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
-export default function SystemNav() {
+import { authLogOut } from "../services/authService";
+import { useNavigate } from "react-router-dom";
+export default function DashboardNav() {
+    const [toggle, setToggle] = useState(false);
+    const navigate = useNavigate();
+    const toggleDropdownUser = (e) => {
+        e.preventDefault();
+        setToggle(!toggle);
+    }
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const { success } = await authLogOut();
+        if (success) {
+            await localStorage.removeItem('token');
+            return navigate('/login');
+        }
+    }
+    const user = JSON.parse(localStorage.getItem('user')) || {};
     return (
         <>
             <nav
@@ -25,73 +43,75 @@ export default function SystemNav() {
 
                     <ul className="navbar-nav flex-row align-items-center ms-auto">
                         <li className="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a className="nav-link dropdown-toggle hide-arrow" href="" data-bs-toggle="dropdown">
+                            <Link className="nav-link dropdown-toggle hide-arrow" href="#" onClick={(e) => toggleDropdownUser(e)}>
                                 <div className="avatar avatar-online">
                                     <img
-                                        src="/assets/system/images/avatar.png"
+                                        src="/assets/dashboard/images/avatar.png"
                                         width={40}
                                         height={40}
                                         alt="Avatar"
                                         className="w-px-40 h-auto rounded-circle"
                                     />
                                 </div>
-                            </a>
-                            <ul className="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <div className="d-flex">
-                                            <div className="flex-shrink-0 me-3">
-                                                <div className="avatar avatar-online">
-                                                    <img
-                                                        src="/assets/system/images/avatar.png"
-                                                        className="w-px-40 h-auto rounded-circle"
-                                                        width={40}
-                                                        height={40}
-                                                        alt="Avatar"
-                                                    />
+                            </Link>
+                            {toggle &&
+                                <ul className="dropdown-menu dropdown-menu-end show" data-bs-popper="static">
+                                    <li>
+                                        <Link className="dropdown-item" href="#">
+                                            <div className="d-flex">
+                                                <div className="flex-shrink-0 me-3">
+                                                    <div className="avatar avatar-online">
+                                                        <img
+                                                            src="/assets/dashboard/images/avatar.png"
+                                                            className="w-px-40 h-auto rounded-circle"
+                                                            width={40}
+                                                            height={40}
+                                                            alt="Avatar"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex-grow-1">
+                                                    <span className="fw-medium d-block">{user.name}</span>
+                                                    <small className="text-muted">Admin</small>
                                                 </div>
                                             </div>
-                                            <div className="flex-grow-1">
-                                                <span className="fw-medium d-block">John Doe</span>
-                                                <small className="text-muted">Admin</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <i className="bx bx-user me-2"></i>
-                                        <span className="align-middle">My Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <i className="bx bx-cog me-2"></i>
-                                        <span className="align-middle">Settings</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="#">
-                                        <span className="d-flex align-items-center align-middle">
-                                            <i className="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                            <span className="flex-grow-1 align-middle ms-1">Billing</span>
-                                            <span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a className="dropdown-item" href="">
-                                        <i className="bx bx-power-off me-2"></i>
-                                        <span className="align-middle">Log Out</span>
-                                    </a>
-                                </li>
-                            </ul>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <div className="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/dashboard/profile">
+                                            <i className="bx bx-user me-2"></i>
+                                            <span className="align-middle">My Profile</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" href="#">
+                                            <i className="bx bx-cog me-2"></i>
+                                            <span className="align-middle">Settings</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" href="#">
+                                            <span className="d-flex align-items-center align-middle">
+                                                <i className="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                                <span className="flex-grow-1 align-middle ms-1">Billing</span>
+                                                <span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                            </span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <div className="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" href="#" onClick={(e) => handleLogout(e)}>
+                                            <i className="bx bx-power-off me-2"></i>
+                                            <span className="align-middle">Log Out</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            }
                         </li>
                     </ul>
                 </div>

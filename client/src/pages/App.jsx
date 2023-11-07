@@ -1,9 +1,9 @@
-import axios from "axios";
+import { clientAxios } from "../lib/axios";
 import { Link } from "react-router-dom";
 function App() {
     const handleGoogleUrl = async (e) => {
         e.preventDefault();
-        await axios.get(`${process.env.REACT_APP_ENDPOINT}/social/google/url`)
+        await clientAxios.get(`/social/google/url`)
             .then((res) => {
                 const result = res.data;
                 if (result.success) {

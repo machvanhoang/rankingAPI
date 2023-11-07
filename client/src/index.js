@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import AuthCallBack from './pages/Auth/CallBack';
 import NotFound from './pages/NotFound';
+import DashboardProfile from './pages/Dashboard/Profile';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter basename="/">
@@ -16,6 +17,7 @@ root.render(
             <Route path="/login" element={<Login />} />
             <Route path="/auth/callback" element={<AuthCallBack />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/profile" element={<DashboardProfile />} />
             <Route path="/404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
