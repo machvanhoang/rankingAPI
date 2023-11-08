@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { clientAxios } from "../../lib/axios";
+import Cookies from "js-cookie";
+import "../../styles/auth/callback.css";
 export default function AuthCallBack() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -15,8 +17,8 @@ export default function AuthCallBack() {
                     const { success, data } = await response.data;
                     if (success) {
                         const { token, user } = await data;
-                        await localStorage.setItem("token", token);
-                        await localStorage.setItem("user", JSON.stringify(user));
+                        await Cookies.set('tokenAdmin', token);
+                        await Cookies.set('userAdmin', JSON.stringify(user));
                         await navigate("/dashboard");
                     }
                 })
@@ -29,6 +31,8 @@ export default function AuthCallBack() {
         }
     }, [queryParams, navigate]);
     return (
-        <h1>Waiting...</h1>
+        <div className="loading">
+            <div className="spinner"></div>
+        </div>
     )
 }

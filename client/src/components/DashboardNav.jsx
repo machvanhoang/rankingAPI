@@ -2,7 +2,8 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { authLogOut } from "../services/authService";
 import { useNavigate } from "react-router-dom";
-export default function DashboardNav() {
+import Cookies from "js-cookie";
+export default function DashboardNav({ user }) {
     const [toggle, setToggle] = useState(false);
     const navigate = useNavigate();
     const toggleDropdownUser = (e) => {
@@ -13,11 +14,10 @@ export default function DashboardNav() {
         e.preventDefault();
         const { success } = await authLogOut();
         if (success) {
-            await localStorage.removeItem('token');
-            return navigate('/login');
+            await Cookies.remove('tokenAdmin');
+            return navigate('/auth/login');
         }
     }
-    const user = JSON.parse(localStorage.getItem('user')) || {};
     return (
         <>
             <nav
@@ -70,9 +70,8 @@ export default function DashboardNav() {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="flex-grow-1">
+                                                <div className="flex-grow-1 d-flex align-items-center">
                                                     <span className="fw-medium d-block">{user.name}</span>
-                                                    <small className="text-muted">Admin</small>
                                                 </div>
                                             </div>
                                         </Link>

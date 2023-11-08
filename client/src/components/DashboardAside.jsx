@@ -25,18 +25,18 @@ export default function DashboardAside() {
                     </li>
                     <li className={`menu-item`}>
                         <Link
-                            to="/dashboard/ranking"
+                            to="/dashboard/page-speed"
                             className="menu-link">
-                            <i className="menu-icon tf-icons bx bx-envelope"></i>
-                            <div data-i18n="Email">Emoji</div>
+                            <i className="menu-icon tf-icons bx bx-sort-a-z"></i>
+                            <div data-i18n="Email">Page Speed</div>
                         </Link>
                     </li>
                     <li className={`menu-item`}>
                         <Link
-                            to="/dashboard/role"
+                            to="/dashboard/seo"
                             className="menu-link">
-                            <i className="menu-icon tf-icons bx bx-envelope"></i>
-                            <div data-i18n="Email">Role</div>
+                            <i className="menu-icon tf-icons bx bx-news"></i>
+                            <div data-i18n="Email">Seo</div>
                         </Link>
                     </li>
                     <li className="menu-header small text-uppercase"><span className="menu-header-text">General</span></li>

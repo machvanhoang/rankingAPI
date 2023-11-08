@@ -4,35 +4,41 @@ import '../styles/dashboard/core.css'
 import '../styles/dashboard/theme.css'
 import '../styles/dashboard/app.css'
 import '../styles/dashboard/perfect-scrollbar.css'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardAside from '../components/DashboardAside';
 import DashboardFooter from '../components/DashboardFooter';
 import DashboardNav from '../components/DashboardNav';
+import Cookies from 'js-cookie'
 const DashboardLayout = ({ children }) => {
     const navigate = useNavigate();
+    const [user, setUser] = useState({});
+    const tokenAdmin = Cookies.get('tokenAdmin');
+    if (!tokenAdmin) {
+        navigate('/auth/login');
+    }
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/login');
-        }
-    }, [navigate]);
+        const userAdmin = Cookies.get('userAdmin') ? JSON.parse(Cookies.get('userAdmin')) : {};
+        setUser(userAdmin);
+    }, []);
     return (
         <>
-            <div className="layout-wrapper layout-content-navbar">
-                <div className="layout-container">
-                    <DashboardAside />
-                    <div className="layout-page">
-                        <DashboardNav />
-                        <div className="content-wrapper">
-                            {children}
-                            <DashboardFooter />
-                            <div className="content-backdrop fade"></div>
+            {tokenAdmin &&
+                <div className="layout-wrapper layout-content-navbar">
+                    <div className="layout-container">
+                        <DashboardAside />
+                        <div className="layout-page">
+                            <DashboardNav user={user} />
+                            <div className="content-wrapper">
+                                {children}
+                                <DashboardFooter />
+                                <div className="content-backdrop fade"></div>
+                            </div>
                         </div>
                     </div>
+                    <div className="layout-overlay layout-menu-toggle"></div>
                 </div>
-                <div className="layout-overlay layout-menu-toggle"></div>
-            </div>
+            }
         </>
     );
 };
