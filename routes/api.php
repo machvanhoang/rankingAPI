@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\SocialController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\RankingController;
 use Illuminate\Http\Request;
@@ -16,14 +17,32 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('user')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', function (Request $request) {
+        $user = $request->user();
+        return sendResponse([
+            'user' => $user,
+        ], "Success");
+    });
+
+    Route::post('/logout', function (Request $request) {
+        $request->user()->tokens()->delete();
+        return sendResponse([], "success");
+    });
+});
+
+Route::prefix('social')->controller(SocialController::class)->group(function () {
+    Route::prefix('google')->group(function () {
+        Route::get('url', 'googleUrl');
+        Route::post('login', 'googleLogin');
+    });
 });
 
 Route::prefix('ranking')->controller(RankingController::class)->group(function () {
     Route::post('page-speed', 'pageSpeed');
     Route::post('seo-good', 'seoGood');
 });
+
 Route::prefix('content')->controller(ContentController::class)->group(function () {
     Route::post('checking', 'checking');
 });
