@@ -2,7 +2,7 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import DashboardBreadcrumb from "../../components/DashboardBreadcrumb";
 import { useState } from "react";
 import { pageSpeedChecking } from "../../services/rankingService";
-import PageSpeedItem from "../../components/PageSpeedItem";
+import PageSpeedResult from "../../components/PageSpeedResult";
 export default function DashboardPageSpeed() {
     const [url, setUrl] = useState("");
     const [submit, setSubmit] = useState(false);
@@ -47,7 +47,7 @@ export default function DashboardPageSpeed() {
                                 </div>
                             </div>
                         </div>
-                        {allData && <PageSpeedItem allData={allData} />}
+                        {allData && <PageSpeedResult allData={allData} />}
                     </div>
                 </div>
             </DashboardLayout>
