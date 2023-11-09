@@ -2,6 +2,7 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import DashboardBreadcrumb from "../../components/DashboardBreadcrumb";
 import { useState } from "react";
 import { pageSpeedChecking } from "../../services/rankingService";
+import PageSpeedItem from "../../components/PageSpeedItem";
 export default function DashboardPageSpeed() {
     const [url, setUrl] = useState("");
     const [submit, setSubmit] = useState(false);
@@ -46,22 +47,7 @@ export default function DashboardPageSpeed() {
                                 </div>
                             </div>
                         </div>
-                        {allData &&
-                            <div>
-                                {Object.keys(allData).map((key) => {
-                                    const detail = allData[key] ?? {};
-                                    return (
-                                        <div className="card mb-3">
-                                            <div className="card-header">
-                                                <h4 className="m-0">{detail.title}</h4>
-                                            </div>
-                                            <div className="card-body">
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        }
+                        {allData && <PageSpeedItem allData={allData} />}
                     </div>
                 </div>
             </DashboardLayout>
