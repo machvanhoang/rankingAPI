@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\SocialController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\RankingController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,4 +46,25 @@ Route::prefix('ranking')->controller(RankingController::class)->group(function (
 
 Route::prefix('content')->controller(ContentController::class)->group(function () {
     Route::post('checking', 'checking');
+});
+
+Route::get('test', function () {
+    $time1 = now()->format('h:i:s');
+    $url1 = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://shopbetet.vn/may-dun-nuoc-pha-sua-news-100.html&locale=vi&category=accessibility&strategy=mobile";
+    $url2 = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://shopbetet.vn/may-dun-nuoc-pha-sua-news-100.html&locale=vi&category=best-practices&strategy=mobile";
+    $url3 = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://shopbetet.vn/may-dun-nuoc-pha-sua-news-100.html&locale=vi&category=performance&strategy=mobile";
+    $response1 = Http::get($url1);
+    $response2 = Http::get($url2);
+    $response3 = Http::get($url3);
+    $responseData1 = $response1->json();
+    $responseData2 = $response2->json();
+    $responseData3 = $response3->json();
+    $time2 = now()->format('h:i:s');
+    return [
+        $time1,
+        $time2,
+        $responseData1,
+        $responseData2,
+        $responseData3,
+    ];
 });

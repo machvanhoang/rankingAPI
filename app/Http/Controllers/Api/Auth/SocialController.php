@@ -16,7 +16,7 @@ class SocialController extends Controller
     public function googleUrl()
     {
         $url = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
-        return sendResponse(['url' => $url], "Success");
+        return response_success(['url' => $url], "Success");
     }
 
     /**
@@ -38,9 +38,9 @@ class SocialController extends Controller
             }
             auth()->login($user);
             $token = $user->createToken('access_token')->plainTextToken;
-            return sendResponse(['token' => $token, 'user' => $user], "Login successful");
+            return response_success(['token' => $token, 'user' => $user], "Login successful");
         } catch (\Exception $e) {
-            return sendError("Error", $e->getMessage());
+            return response_error([$e->getMessage()]);
         }
     }
 }

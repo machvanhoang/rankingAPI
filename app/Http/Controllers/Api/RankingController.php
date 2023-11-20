@@ -22,16 +22,17 @@ class RankingController extends Controller
             'url' => 'required|url',
         ]);
         if ($validator->fails()) {
-            return sendError('Validation Error.', $validator->errors());
+            return response_error('Validation Error.', $validator->errors());
         }
+        //https://developers.google.com/speed/docs/insights/v5/reference/pagespeedapi/runpagespeed
         $apiGoogle = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=" . $data["url"];
         $response = Http::get($apiGoogle);
         $responseData = $response->json();
         if (empty($responseData["lighthouseResult"])) {
-            return sendError('Invalid API Response.');
+            return response_error(['message' => 'Invalid API Response.']);
         }
         $audits = !empty($responseData["lighthouseResult"]["audits"]) ? $responseData["lighthouseResult"]["audits"] : [];
-        return sendResponse($audits, "Success");
+        return response_success($audits, "Success");
     }
 
     /**
